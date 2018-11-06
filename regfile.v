@@ -1,6 +1,3 @@
-//`include "register.v"
-//`include "mux.v"
-//`include "decoders.v"
 //------------------------------------------------------------------------------
 // MIPS register file
 //   width: 32 bits
