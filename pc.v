@@ -23,8 +23,13 @@ module complexPC(
 	initial pc <= 0;
 	always @(posedge clk) begin
 		if (isJmp) pc <= {pc[31:28], imm, 2'b0};
-		if (isJr) pc <= rrt;
-		if (isBr) pc <= pc + 32'd4 + {14'b0, imm, 2'b0};
+		else begin
+			if (isJr) pc <= rrt;
+			else begin
+				if (isBr) pc <= pc + 32'd4 + {14'b0, imm, 2'b0};
+				else pc <= pc + 32'd4;
+			end
+		end
 	end
 
 endmodule
