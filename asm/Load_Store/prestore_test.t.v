@@ -13,8 +13,8 @@ module prestore_test ();
     	$dumpfile("prestore_waves.vcd");
     	$dumpvars();
 
-    	$readmemh("prestore_memory.text.hex", dut.InstructionMemory.memory, 0);
-			$readmemh("prestore_memory.data.hex", dut.cpuer.Mem.memory, 0);
+    	$readmemh("prestore_memory.text.hex", dut.dataMemory.memory, 0);
+			$readmemh("prestore_memory.data.hex", dut.dataMemory.memory, 0);
 
     	#1000
     	$finish();

@@ -42,12 +42,12 @@ endmodule
 module dataMemory
 #(
     parameter depth = 32'b00000000000000000000010000000000,
-    parameter offset = 32'b000000000000000000000000000000
+    parameter offset = 32'b0
 )
 (
     input                     clk,
     output[31:0]            dataOut,
-    output[31:0]         instruction,
+    output[31:0]        instruction,
     input [31:0]            address,
     input [31:0]         pc_address,
     input               writeEnable,
@@ -60,8 +60,7 @@ module dataMemory
     wire[31:0] shift_address; // use the ALU to shift the address as necessary (shift if accessing datamemory)
     wire z, c, o; // for alu
 
-    ALU alu(.result(shift_address), .carryout(c), .zero(z), .overflow(o),
-  .operandA(address), .operandB(offset), .command(3'd1)); //sub
+    assign shift_address = address-offset;
 
     wire [31:0] div4_address = shift_address >> 2;
 
