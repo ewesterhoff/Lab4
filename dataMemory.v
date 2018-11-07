@@ -47,7 +47,9 @@ module dataMemory
 (
     input                     clk,
     output[31:0]            dataOut,
+    output[31:0]         instruction,
     input [31:0]            address,
+    input [31:0]         pc_address,
     input               writeEnable,
     input [31:0]             dataIn
 );
