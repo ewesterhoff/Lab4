@@ -13,7 +13,7 @@ module lw_sw_cpu_test ();
     	$dumpfile("lw_sw_waves.vcd");
     	$dumpvars();
 
-    	$readmemh("lw_sw.text.hex", dut.InstructionMemory.memory, 0);
+    	$readmemh("lw_sw.text.hex", dut.dataMemory.memory, 0);
 
 
     	#1000
