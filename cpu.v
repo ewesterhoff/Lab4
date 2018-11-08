@@ -1,8 +1,9 @@
-`include "adder32.v"
 `include "alu.v"
 `include "dataMemory.v"
 `include "decoder.v"
 `include "regfile.v"
+`include "decodelet.v"
+`include "pc.v"
 
 module cpu(
   input clk,
@@ -28,19 +29,22 @@ module cpu(
   wire[31:0] rs,rt;
   wire immSel1, memWrEn1, regWrEn1, isJmp1, isJr1, DwSel1, brSel1;
   wire carryout, zero, overflow;
-
+  wire[31:0] cmdDecodelet, memOut;
+  wire imm0;
+  assign imm0 = 0;
 
 
 
     complexPC pcComp(.clk(clk), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .rrt(rrt1),.pcData(pc));
+    decodelet pcDecode(.cmdIn(cmdDecodelet),.isJmp(isJmp), .isJr(isJr), .isBr(isBr),.cmdOut(cmd0));
     always @(posedge clk)begin cmd1 = cmd0; end
-    decoder decode( .cmd(cmd1), .immSel(immSel1), .memWrEn(memWrEn1), .regWrEn(regWrEn1), .isJmp(isJmp1), .isJr(isJr1), .DwSel(DwSel1), .brSel(brSel1), .Aa(rs), .Ab(rt), .Aw(addrReg1), .aluOp(aluOp1), .imm(imm1), .jumpAddr());
+    decoder decode( .cmd(cmd1), .immSel(immSel1), .memWrEn(memWrEn1), .regWrEn(regWrEn1), .DwSel(DwSel1), .Aa(rs), .Ab(rt), .Aw(addrReg1), .aluOp(aluOp1), .imm(imm1));
     regfile register( .ReadData1(rs), .ReadData2(rt), .WriteData(dw4), .ReadRegister1(rrs1), .ReadRegister2(rrt1), .WriteRegister(addrReg4), .RegWrite(regWrEn4),	.Clk(clk));
     always @(posedge clk)begin rrs2 = rrs1; rrtOrImm2 = rrtOrImm1; imm2 = imm1; addrReg2 = addrReg1; end
-    alu alU(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflwo), .operandA(rrs2), .operandB(rrtOrImm2), .command(aluOp2));
+    alu alU(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrs2), .operandB(rrtOrImm2), .command(aluOp2));
 
     always @(posedge clk)begin rrs3 = rrs2; imm3 = imm2; addrReg3 = addrReg2; aluOut3 = aluOut2; end
-    dataMemory mem( .clk(clk),.dataOut(memOut), .instruction(cmd0), .address(aluOut3), .pc_address(pc), .writeEnable(memWrEn3), .dataIn(rrt3));
+    dataMemory mem( .clk(clk),.dataOut(memOut), .instruction(cmdDecodelet), .address(aluOut3), .pc_address(pc), .writeEnable(memWrEn3), .dataIn(rrt3));
     always @(posedge clk)begin addrReg4 = addrReg3; aluOut4 = aluOut3; end
 
 endmodule

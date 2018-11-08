@@ -15,10 +15,10 @@ endmodule
 // A real PC that can do flow control
 module complexPC(
 	input clk, isJmp, isJr, isBr,
-	input imm, rrt,
-	output pcData
+	input[31:0] imm, rrt,
+	output[31:0] pcData
 );
-	
+
 	reg [31:0] pc;
 	initial pc <= 0;
 	always @(posedge clk) begin
