@@ -11,12 +11,11 @@
 
 module decoder(
 	input [31:0] cmd,
-	output immSel, memWrEn, regWrEn, isJmp, isJr,
-	output [1:0] DwSel, brSel,
+	output immSel, memWrEn, regWrEn,
+	output [1:0] DwSel,
 	output [4:0] Aa, Ab, Aw, 
 	output [2:0] aluOp,
-	output [15:0] imm,
-	output [25:0] jumpAddr
+	output [15:0] imm
 );
 
 	// Always in the same place in the command, though not always there
@@ -24,7 +23,6 @@ module decoder(
 	wire [5:0] funct; assign funct = cmd[5:0];
 
 	assign imm = cmd[15:0];
-	assign jumpAddr = cmd[25:0];
 
 	// One-hot representation of opcodes / functs
 	wire lw; assign lw = (opcode == 6'h23);
@@ -49,9 +47,6 @@ module decoder(
 	assign immSel = lw | sw | addi | xori; // Use an immediate?
 	assign aluOp = xori ? `XOR : (slt ? `SLT : (beq | bne | sub ? `SUB : `ADD)); // What operation in the main ALU?
 	assign DwSel = lw ? 2'd2 : (jal ? 2'd1 : 2'd0); // What data to write to the register file?
-	assign isJmp = j | jal;
-	assign isJr = jr;
-	assign brSel = bne ? 2'd2 : (beq ? 2'd1 : 0);
 	assign memWrEn = sw; // Write to memeory?
 	assign regWrEn = !(sw | j | beq | bne | jr); // Write to register?
 
