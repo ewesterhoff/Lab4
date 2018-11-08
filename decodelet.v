@@ -6,6 +6,10 @@ module decodelet(
 	output [31:0] cmdOut
 );
 
+	// Always in the same place in the command, though not always there
+	wire [5:0] opcode; assign opcode = cmdIn[31:26];
+	wire [5:0] funct; assign funct = cmdIn[5:0];
+
 	wire j; assign j = (opcode == 6'h2);
 	wire jr; assign jr = (opcode == 6'h0  && funct == 6'h8);
 	wire beq; assign beq = (opcode == 6'h4);
