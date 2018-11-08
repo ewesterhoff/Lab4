@@ -10,18 +10,20 @@ module cpu(
   output regDest,
   output Dw
   );
-  reg[31:0] cmd1, cmd0;
-  reg[31:0] rrs1, rrs2, rrs3;
-  reg[31:0] rrtOrImm1, rrtOrImm2;
-  reg[31:0] imm1, imm2, imm3;
+  reg[31:0] cmd1;
+  reg[31:0] rrs2, rrs3;
+  reg[31:0] rrtOrImm2;
+  reg[31:0] imm2, imm3;
   reg[31:0] aluOut2, aluOut3, aluOut4;
-  reg[31:0] dw3, dw4;
-  reg[31:0] addrReg1, addrReg2, addrReg3, addrReg4;
+  reg[31:0] dw4;
+  reg[31:0] addrReg2, addrReg3, addrReg4;
+  wire[31:0] imm1,rrs1, cmd0, aluOut1, dw3, addrReg1, pc;
+  wire isJmp, isJr, isBr;
 
 
+    complexPC pcComp(.clk(clk), .isJmp(), .isJr(), .isBr(),.imm(imm0), .rrt(rrt1),.pcData(pc));
     always @(posedge clk)begin cmd1 = cmd0; end
-    complexPC pc(.clk(clk), .isJmp(), .isJr(), .isBr(),.imm(), .rrt(),.pcData());
-    decoder decode( .cmd(), .immSel(), .memWrEn(), .regWrEn(), .isJmp(), .isJr(), .DwSel(), .brSel(), .Aa(), .Ab(), .Aw(), .aluOp(), .imm(), .jumpAddr());
+    decoder decode( .cmd(cmd1), .immSel(), .memWrEn(), .regWrEn(), .isJmp(), .isJr(), .DwSel(), .brSel(), .Aa(rs), .Ab(rt), .Aw(addrReg1), .aluOp(), .imm(imm1), .jumpAddr());
     regfile register( .ReadData1(), .ReadData2(), .WriteData(), .ReadRegister1(), .ReadRegister2(), .WriteRegister(), .RegWrite(),	.Clk(clk));
     always @(posedge clk)begin rrs2 = rrs1; rrtOrImm2 = rrtOrImm1; imm2 = imm1; addrReg2 = addrReg1; end
     ALUcontrolLUT alu( .alu_code0(), .alu_code1(), .alu_code2(), .set_flags(), .slt_enable(), .subtract(), .ALUcommand());
