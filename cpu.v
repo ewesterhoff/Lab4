@@ -41,6 +41,7 @@ module cpu(
 
 	complexPC pcComp(.clk(clk), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .rrt(rrt1),.pcData(pc));
 	decodelet pcDecode(.cmdIn(cmdDecodelet),.isJmp(isJmp), .isJr(isJr), .isBr(isBr),.cmdOut(cmd0));
+	// Data memory is also here, but it's defined in stage 3
 
 	always @(posedge clk)begin cmd1 = cmd0; end
 

@@ -64,6 +64,7 @@ module dataMemory
     wire [31:0] div4_address = shift_address >> 2;
 
     assign dataOut = memory[div4_address];
+		assign instruction = memory[pc_address];
 
     always @(posedge clk) begin
         if(writeEnable)begin
