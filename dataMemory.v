@@ -58,7 +58,6 @@ module dataMemory
 
     reg [31:0] memory [depth-1:0];
     wire[31:0] shift_address; // use the ALU to shift the address as necessary (shift if accessing datamemory)
-    wire z, c, o; // for alu
 
     assign shift_address = address-offset;
 

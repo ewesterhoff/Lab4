@@ -1,6 +1,6 @@
 `include "cpu.v"
 
-module mirror_cpu_test ();
+module xor_etc_cpu_test ();
 	reg clk;
 
 	initial clk = 0;
@@ -10,10 +10,10 @@ module mirror_cpu_test ();
 
     initial begin
 
-    	$dumpfile("xoretc_waves.vcd");
+    	$dumpfile("asm/R_testing/xoretc_waves.vcd");
     	$dumpvars();
 
-    	$readmemh("xor_add_sub_slt.text.hex", dut.InstructionMemory.memory, 0);
+    	$readmemh("asm/R_testing/xor_add_sub_slt.text.hex", dut.mem.memory, 0);
 
     	#1000
     	$finish();
