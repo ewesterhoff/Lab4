@@ -3,7 +3,7 @@
 module xor_etc_cpu_test ();
 	reg clk;
 
-	initial clk = 0;
+	initial clk = 1;
 	always #10 clk =! clk;
 
 	cpu dut(.clk(clk));
