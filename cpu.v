@@ -43,22 +43,22 @@ module cpu(
 	decodelet pcDecode(.cmdIn(cmdDecodelet),.isJmp(isJmp), .isJr(isJr), .isBr(isBr),.cmdOut(cmd0));
 	// Data memory is also here, but it's defined in stage 3
 
-	always @(posedge clk)begin cmd1 = cmd0; end
+	always @(posedge clk)begin cmd1 <= cmd0; end
 
 	decoder decode( .cmd(cmd1), .immSel(immSel1), .memWrEn(memWrEn1), .regWrEn(regWrEn1), .DwSel(DwSel1), .Aa(rs), .Ab(rt), .Aw(addrReg1), .aluOp(aluOp1), .imm(imm1));
 	regfile register( .ReadData1(rrs1), .ReadData2(rrt1), .WriteData(Dw4), .ReadRegister1(rs), .ReadRegister2(rt), .WriteRegister(addrReg4), .RegWrite(regWrEn4),	.Clk(clk));
 	assign rrtOrImm1 = immSel1 ? imm1 : rrt1;
 
-	always @(posedge clk)begin rrs2 = rrs1; rrtOrImm2 = rrtOrImm1; imm2 = imm1; addrReg2 = addrReg1; aluOp2 = aluOp1; cmd2 = cmd1; end
+	always @(posedge clk)begin rrs2 <= rrs1; rrtOrImm2 <= rrtOrImm1; imm2 <= imm1; addrReg2 <= addrReg1; aluOp2 <= aluOp1; cmd2 <= cmd1; end
 
 	alu math(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrs2), .operandB(rrtOrImm2), .command(aluOp2));
 
-	always @(posedge clk)begin rrs3 = rrs2; imm3 = imm2; addrReg3 = addrReg2; aluOut3 = aluOut2; cmd3 = cmd2; end
+	always @(posedge clk)begin rrs3 <= rrs2; imm3 <= imm2; addrReg3 <= addrReg2; aluOut3 <= aluOut2; cmd3 <= cmd2; end
 
 	dataMemory mem( .clk(clk),.dataOut(memOut), .instruction(cmdDecodelet), .address(aluOut3), .pc_address(pc), .writeEnable(memWrEn3), .dataIn(rrt3));
 	assign Dw3 = (DwSel3 == 2'd2) ? memOut : aluOut3;
 
-	always @(posedge clk)begin addrReg4 = addrReg3; Dw4 = Dw3; cmd4 = cmd3;  end
+	always @(posedge clk)begin addrReg4 <= addrReg3; Dw4 <= Dw3; cmd4 <= cmd3;  end
 
 	// The second reg-file access is here, but it's declared in stage 1 because that's where the writing
 	// happens.
