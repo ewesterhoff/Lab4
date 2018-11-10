@@ -20,7 +20,9 @@ module complexPC(
 );
 
 	reg [31:0] pc;
+	assign pcData = pc;
 	initial pc <= 0;
+
 	always @(posedge clk) begin
 		if (isJmp) pc <= {pc[31:28], imm, 2'b0};
 		else begin
