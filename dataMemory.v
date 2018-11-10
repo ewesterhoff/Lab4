@@ -61,14 +61,15 @@ module dataMemory
 
     assign shift_address = address-offset;
 
-    wire [31:0] div4_address = shift_address >> 2;
+    wire [31:0] div4_shift = shift_address >> 2;
+		wire [31:0] div4_pc = pc_address >> 2;
 
-    assign dataOut = memory[div4_address];
-		assign instruction = memory[pc_address];
+    assign dataOut = memory[div4_shift];
+		assign instruction = memory[div4_pc];
 
     always @(posedge clk) begin
         if(writeEnable)begin
-            memory[div4_address] <= dataIn;
+            memory[div4_shift] <= dataIn;
             end
     end
 
