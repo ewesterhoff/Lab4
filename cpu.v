@@ -49,7 +49,7 @@ module cpu(
 	regfile register( .ReadData1(rrs1), .ReadData2(rrt1), .WriteData(Dw4), .ReadRegister1(rs), .ReadRegister2(rt), .WriteRegister(addrReg4), .RegWrite(regWrEn4),	.Clk(clk));
 	assign rrtOrImm1 = immSel1 ? imm1 : rrt1;
 
-	always @(posedge clk)begin rrs2 = rrs1; rrtOrImm2 = rrtOrImm1; imm2 = imm1; addrReg2 = addrReg1; cmd2 = cmd1; end
+	always @(posedge clk)begin rrs2 = rrs1; rrtOrImm2 = rrtOrImm1; imm2 = imm1; addrReg2 = addrReg1; aluOp2 = aluOp1; cmd2 = cmd1; end
 
 	alu math(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrs2), .operandB(rrtOrImm2), .command(aluOp2));
 
