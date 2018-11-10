@@ -15,7 +15,7 @@ module xor_etc_cpu_test ();
 
     	$readmemh("asm/R_testing/xor_add_sub_slt.text.hex", dut.mem.memory, 0);
 
-    	#1000
+    	#500
     	$finish();
     end
 
