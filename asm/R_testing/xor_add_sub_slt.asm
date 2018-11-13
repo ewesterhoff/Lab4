@@ -9,7 +9,6 @@ addi	$t1, $zero, 30
 
 add $t2, $t0, $t1	#51
 add $zero, $zero, $zero
-add $zero, $zero, $zero
 sub $t3, $t0, $t1	#-9
 
 xori $t4, $t0, 42	#21 xori 42 
