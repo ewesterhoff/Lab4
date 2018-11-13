@@ -25,7 +25,7 @@ input		Clk		// Clock (Positive Edge Triggered)
   genvar i;
   generate
     for (i = 1; i < 32; i = i+1)
-      always @(posedge Clk) begin
+      always @(negedge Clk) begin
           if(decoded[i]) begin
               registers[i] <= WriteData;
           end
