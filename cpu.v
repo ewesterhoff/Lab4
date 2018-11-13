@@ -13,8 +13,10 @@ module cpu(
   );
 
   reg[31:0] cmd1, cmd2, cmd3, cmd4;
-  reg[31:0] rrs2, rrs3;
-  reg[31:0] rrt2, rrt3;
+  reg[31:0] rrs3;
+	reg[31:0] rrs2_nofwd, rrt2_nofwd;
+  reg[31:0] rrt3;
+	reg[31:0] rs2;
   reg[15:0] imm2, imm3;
   reg[31:0] aluOut3;
   reg[31:0] Dw4;
@@ -25,10 +27,10 @@ module cpu(
   reg memWrEn2, memWrEn3;
   reg[2:0] aluOp2;
   wire[2:0] aluOp1;
-  wire[31:0] rrs1, rrt1, cmd0, aluOut2, Dw3, pc;
+  wire[31:0] rrs1, rrs2, rrt1, rrt2, cmd0, aluOut2, Dw3, pc;
   wire[15:0] imm1;
   wire isJmp, isJr, isBr;
-  wire[4:0] rs,rt,Aw1;
+  wire[4:0] rs1,rt,Aw1;
   wire immSel1, memWrEn1, regWrEn1, isJmp1, isJr1, brSel1;
   wire[1:0] DwSel1;
   wire carryout, zero, overflow;
@@ -46,12 +48,13 @@ module cpu(
 
 	always @(posedge clk)begin cmd1 <= cmd0; end
 
-	decoder decode( .cmd(cmd1), .immSel(immSel1), .memWrEn(memWrEn1), .regWrEn(regWrEn1), .DwSel(DwSel1), .Aa(rs), .Ab(rt), .Aw(Aw1), .aluOp(aluOp1), .imm(imm1));
-	regfile register( .ReadData1(rrsNow), .ReadData2(rrt1), .WriteData(Dw4), .ReadRegister1(rs), .ReadRegister2(rt), .WriteRegister(Aw4), .RegWrite(regWrEn4),	.Clk(clk));
-	// assign rrs1 = (rs1 == Aw2) && regWrEn2 && (DwSel2 == 2'd0) ? aluOut2 : rrsNow;
-	assign rrs1 = rrsNow;
+	decoder decode( .cmd(cmd1), .immSel(immSel1), .memWrEn(memWrEn1), .regWrEn(regWrEn1), .DwSel(DwSel1), .Aa(rs1), .Ab(rt), .Aw(Aw1), .aluOp(aluOp1), .imm(imm1));
+	regfile register( .ReadData1(rrs1), .ReadData2(rrt1), .WriteData(Dw4), .ReadRegister1(rs1), .ReadRegister2(rt), .WriteRegister(Aw4), .RegWrite(regWrEn4),	.Clk(clk));
 
-	always @(posedge clk)begin rrs2 <= rrs1; rrt2 <= rrt1; regWrEn2 <= regWrEn1; immSel2 <= immSel1;  imm2 <= imm1; Aw2 <= Aw1; aluOp2 <= aluOp1; cmd2 <= cmd1; DwSel2 <= DwSel1;end
+	always @(posedge clk)begin rs2 <= rs1; rrs2_nofwd <= rrs1; rrt2_nofwd <= rrt1; regWrEn2 <= regWrEn1; immSel2 <= immSel1;  imm2 <= imm1; Aw2 <= Aw1; aluOp2 <= aluOp1; cmd2 <= cmd1; DwSel2 <= DwSel1;end
+
+	assign rrs2 = (rs2 == 5'b0) ? rrs2_nofwd : ( (rs2 == Aw3 && regWrEn3) ? Dw3 : ( (rs2 == Aw4 && regWrEn4) ? Dw4 : rrs2_nofwd) );
+	assign rrt2 = (rs2 == 5'b0) ? rrt2_nofwd : ( (rs2 == Aw3 && regWrEn3) ? Dw3 : ( (rs2 == Aw4 && regWrEn4) ? Dw4 : rrt2_nofwd) );
 
 	assign rrtOrImm2 = immSel2 ? imm2 : rrt2;
 	alu math(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrs2), .operandB(rrtOrImm2), .command(aluOp2));

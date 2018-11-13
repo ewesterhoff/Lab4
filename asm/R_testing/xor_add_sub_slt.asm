@@ -1,3 +1,8 @@
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+
 li $sp 0x3ffc
 
 addi	$t0, $zero, 21		# i, the current array element being accessed
