@@ -4,7 +4,7 @@ add $zero, $zero, $zero
 
 li $sp 0x3ffc
 
-addi	$t0, $zero, 21		# i, the current array element being accessed
+addi	$t0, $zero, 21
 addi	$t1, $zero, 30	
 
 add $t2, $t0, $t1	#51
