@@ -3,6 +3,11 @@ li $sp 0x3ffc
 addi	$t0, $zero, 21		# i, the current array element being accessed
 addi	$t1, $zero, 30	
 
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+
 add $t3, $t0, $t1	#51
 sub $t4, $t0, $t1	#-9
 
