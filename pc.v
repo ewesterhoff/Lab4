@@ -15,7 +15,9 @@ endmodule
 // A real PC that can do flow control
 module complexPC(
 	input clk, isBubble, isJmp, isJr, isBr,
-	input[31:0] imm, rrt,
+	input [15:0] imm,
+	input [25:0] jmpAddr,
+	input[31:0] rrt,
 	output[31:0] pcData
 );
 
@@ -26,7 +28,7 @@ module complexPC(
 	always @(posedge clk) begin
 		if (isBubble) pc <= pc; 
 			else begin
-			if (isJmp) pc <= {pc[31:28], imm, 2'b0};
+			if (isJmp) pc <= {pc[31:28], jmpAddr, 2'b0};
 			else begin
 				if (isJr) pc <= rrt;
 				else begin
