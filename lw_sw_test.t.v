@@ -16,7 +16,7 @@ module lw_sw_cpu_test ();
     	$readmemh("asm/Load_Store/lw_sw.text.hex", dut.mem.memory, 0);
 
 
-    	#1000
+    	#300
     	$finish();
     end
 
