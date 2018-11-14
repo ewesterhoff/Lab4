@@ -35,15 +35,14 @@ module cpu(
   wire[1:0] DwSel1;
   wire carryout, zero, overflow;
   wire[31:0] cmdDecodelet, memOut;
-  wire[31:0] imm0;
+  wire[15:0] imm0;
+	wire[25:0] jmpAddr;
   wire[31:0] rrtOrImm2;
 	wire[31:0] rrsNow;
-  assign imm0 = 0;
 
 
-
-	complexPC pcComp(.clk(clk), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .rrt(rrt1),.pcData(pc));
-	decodelet pcDecode(.cmdIn(cmdDecodelet), .lastCmdIn(cmd1), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.cmdOut(cmd0));
+	complexPC pcComp(.clk(clk), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .jmpAddr(jmpAddr), .rrt(rrt1),.pcData(pc));
+	decodelet pcDecode(.cmdIn(cmdDecodelet), .lastCmdIn(cmd1), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr), .imm(imm0), .jmpAddr(jmpAddr), .cmdOut(cmd0));
 	// Data memory is also here, but it's defined in stage 3
 
 	always @(posedge clk)begin cmd1 <= cmd0; end
