@@ -17,7 +17,7 @@ module complexPC(
 	input clk, isBubble, isJmp, isJr, isBr,
 	input [15:0] imm,
 	input [25:0] jmpAddr,
-	input[31:0] rrt,
+	input[31:0] rrs,
 	output[31:0] pcData
 );
 
@@ -26,11 +26,10 @@ module complexPC(
 	initial pc <= 0;
 
 	always @(posedge clk) begin
-		if (isBubble) pc <= pc; 
-			else begin
+		if (!isBubble) begin
 			if (isJmp) pc <= {pc[31:28], jmpAddr, 2'b0};
 			else begin
-				if (isJr) pc <= rrt;
+				if (isJr) pc <= rrs;
 				else begin
 					if (isBr) pc <= pc + 32'd4 + {14'b0, imm, 2'b0};
 					else pc <= pc + 32'd4;

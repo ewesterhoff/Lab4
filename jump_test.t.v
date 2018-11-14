@@ -17,7 +17,7 @@ module jump_test ();
     	$readmemh("asm/Flow_Control/jr_jal.text.hex", dut.mem.memory, 0);
 
 
-    	#300
+    	#800
     	$finish();
     end
 

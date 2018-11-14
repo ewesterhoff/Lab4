@@ -1,8 +1,8 @@
 // Mini decoder for flow control only
 
 module decodelet(
-	input [31:0] cmdIn, lastCmdIn,
-	output isBubble, isJmp, isJr, isBr, 
+	input [31:0] cmdIn, lastCmdIn, lastLastCmdIn,
+	output isBubble, isJmp, isJr, isBr,
 	output [15:0] imm,
 	output [25:0] jmpAddr,
 	output [31:0] cmdOut
@@ -22,11 +22,13 @@ module decodelet(
 	wire bne; assign bne = (opcode == 6'h5);
 
 	wire lastLw; assign lastLw = (lastCmdIn[31:26] == 6'h23);
+	wire lastJR; assign lastJR = (lastCmdIn[31:26] == 6'h0 && lastCmdIn[5:0] == 6'h8);
+	wire lastLastJR; assign lastLastJR = (lastLastCmdIn[31:26] == 6'h0 && lastLastCmdIn[5:0] == 6'h8);
 
-	assign isBubble = lastLw;
-	assign isJmp = !lastLw && ( j | jal | jr);
-	assign isJr = 0; // No jump reg yet
-	assign isBr = 0; // No bromine yet 
+	assign isBubble = lastLw | lastJR;
+	assign isJmp = !lastLw && ( j | jal);
+	assign isJr = lastLastJR; // No jump reg yet
+	assign isBr = 0; // No bromine yet
 
 	assign cmdOut = isBubble ? 32'h00000020 : cmdIn; // Send " add $zero, $zero, $zero " for bubbles
 
