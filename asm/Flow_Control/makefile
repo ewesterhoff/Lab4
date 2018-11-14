@@ -1,7 +1,7 @@
 # Generate machine code memory image from MIPS assembly
 
 # Get PROGRAM and *MEMDUMP from project settings
-PROGRAM := jump
+PROGRAM := jr_jal
 
 # Memory image(s) to create from the assembly program
 TEXTMEMDUMP := $(PROGRAM).text.hex
