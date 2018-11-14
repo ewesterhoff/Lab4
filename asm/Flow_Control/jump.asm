@@ -3,7 +3,7 @@ li $sp 0x3ffc
 addi $t0, $zero, 5
 addi $t1, $zero, 6
 
-j TARGET:
+j TARGET
 
 addi $t3, $t0, 2
 
