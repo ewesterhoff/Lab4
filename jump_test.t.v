@@ -13,7 +13,8 @@ module jump_test ();
     	$dumpfile("asm/Flow_Control/jump_waves.vcd");
     	$dumpvars();
 
-    	$readmemh("asm/Flow_Control/jump.text.hex", dut.mem.memory, 0);
+			//$readmemh("asm/Flow_Control/jump.text.hex", dut.mem.memory, 0);
+    	$readmemh("asm/Flow_Control/jr_jal.text.hex", dut.mem.memory, 0);
 
 
     	#300
