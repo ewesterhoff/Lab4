@@ -1,7 +1,7 @@
 # Generate machine code memory image from MIPS assembly
 
 # Get PROGRAM and *MEMDUMP from project settings
-PROGRAM := lw_sw
+PROGRAM := prestore
 
 # Memory image(s) to create from the assembly program
 TEXTMEMDUMP := $(PROGRAM).text.hex
