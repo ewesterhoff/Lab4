@@ -51,7 +51,7 @@ module cpu(
 	decoder decode( .cmd(cmd1), .immSel(immSel1), .memWrEn(memWrEn1), .regWrEn(regWrEn1), .DwSel(DwSel1), .Aa(rs1), .Ab(rt1), .Aw(Aw1), .aluOp(aluOp1), .imm(imm1));
 	regfile register( .ReadData1(rrs1), .ReadData2(rrt1), .WriteData(Dw4), .ReadRegister1(rs1), .ReadRegister2(rt1), .WriteRegister(Aw4), .RegWrite(regWrEn4),	.Clk(clk));
 
-	always @(posedge clk)begin rs2 <= rs1; rt2 <= rt1; rrs2_nofwd <= rrs1; rrt2_nofwd <= rrt1; regWrEn2 <= regWrEn1; immSel2 <= immSel1;  imm2 <= imm1; Aw2 <= Aw1; aluOp2 <= aluOp1; cmd2 <= cmd1; DwSel2 <= DwSel1; end
+	always @(posedge clk)begin rs2 <= rs1; rt2 <= rt1; rrs2_nofwd <= rrs1; rrt2_nofwd <= rrt1; regWrEn2 <= regWrEn1; immSel2 <= immSel1;  imm2 <= imm1; Aw2 <= Aw1; aluOp2 <= aluOp1; cmd2 <= cmd1; DwSel2 <= DwSel1; memWrEn2 <= memWrEn1;end
 
 	assign rrs2 = (rs2 == 5'b0) ? rrs2_nofwd : ( (rs2 == Aw3 && regWrEn3) ? Dw3 : ( (rs2 == Aw4 && regWrEn4) ? Dw4 : rrs2_nofwd) );
 	assign rrt2 = (rt2 == 5'b0) ? rrt2_nofwd : ( (rt2 == Aw3 && regWrEn3) ? Dw3 : ( (rt2 == Aw4 && regWrEn4) ? Dw4 : rrt2_nofwd) );
@@ -59,7 +59,7 @@ module cpu(
 	assign rrtOrImm2 = immSel2 ? imm2 : rrt2;
 	alu math(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrs2), .operandB(rrtOrImm2), .command(aluOp2));
 
-	always @(posedge clk)begin rrs3 <= rrs2; regWrEn3 <= regWrEn2; imm3 <= imm2; Aw3 <= Aw2; aluOut3 <= aluOut2; cmd3 <= cmd2; rrt3 <= rrt2; DwSel3 <= DwSel2; end
+	always @(posedge clk)begin rrs3 <= rrs2; regWrEn3 <= regWrEn2; imm3 <= imm2; Aw3 <= Aw2; aluOut3 <= aluOut2; cmd3 <= cmd2; rrt3 <= rrt2; DwSel3 <= DwSel2; memWrEn3 <= memWrEn2; end
 
 	dataMemory mem( .clk(clk),.dataOut(memOut), .instruction(cmdDecodelet), .address(aluOut3), .pc_address(pc), .writeEnable(memWrEn3), .dataIn(rrt3));
 	assign Dw3 = (DwSel3 == 2'd2) ? memOut : aluOut3;
