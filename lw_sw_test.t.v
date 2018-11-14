@@ -13,7 +13,7 @@ module lw_sw_cpu_test ();
     	$dumpfile("asm/Load_Store/lw_sw_waves.vcd");
     	$dumpvars();
 
-    	$readmemh("asm/Load_Store/lw_sw.text.hex", dut.dataMemory.memory, 0);
+    	$readmemh("asm/Load_Store/lw_sw.text.hex", dut.mem.memory, 0);
 
 
     	#1000
