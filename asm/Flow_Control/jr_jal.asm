@@ -1,4 +1,6 @@
-li $sp 0x3ffc
+add $zero, $zero, $zero
+add $zero, $zero, $zero
+add $zero, $zero, $zero
 
 addi $t0, $zero, 10
 addi $t1, $zero, 21
