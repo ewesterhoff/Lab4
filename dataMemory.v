@@ -41,8 +41,8 @@ endmodule
 // Datapath memory size: 4096-1024 = 3072
 module dataMemory
 #(
-    parameter depth = 4096,
-    parameter offset = 2048
+    parameter depth = 32'd1024,
+    parameter offset = 0
 )
 (
     input                     clk,
