@@ -10,10 +10,10 @@ module lw_sw_cpu_test ();
 
     initial begin
 
-    	$dumpfile("lw_sw_waves.vcd");
+    	$dumpfile("asm/Load_Store/lw_sw_waves.vcd");
     	$dumpvars();
 
-    	$readmemh("lw_sw.text.hex", dut.dataMemory.memory, 0);
+    	$readmemh("asm/Load_Store/lw_sw.text.hex", dut.dataMemory.memory, 0);
 
 
     	#1000
