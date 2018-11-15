@@ -1,6 +1,4 @@
-add $zero, $zero, $zero
-add $zero, $zero, $zero
-add $zero, $zero, $zero
+
 
 addi $t0, $zero, 10
 addi $t1, $zero, 21
@@ -8,7 +6,6 @@ addi $t2, $zero 31
 
 jal target
 addi $t3, $zero, 10
-add $zero, $zero, $zero
 j end
 
 
