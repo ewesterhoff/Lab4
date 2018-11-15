@@ -25,9 +25,9 @@ module decodelet(
 	wire lastJR; assign lastJR = (lastCmdIn[31:26] == 6'h0 && lastCmdIn[5:0] == 6'h8);
 	wire lastLastJR; assign lastLastJR = (lastLastCmdIn[31:26] == 6'h0 && lastLastCmdIn[5:0] == 6'h8);
 
-	assign isBubble = lastLw | lastJR;
+	assign isBubble = (lastLw | lastJR) && !lastLastJR;
 	assign isJmp = !lastLw && ( j | jal);
-	assign isJr = lastLastJR; // No jump reg yet
+	assign isJr = lastLastJR && lastJR && jr; // No jump reg yet
 	assign isBr = 0; // No bromine yet
 
 	assign cmdOut = isBubble ? 32'h00000020 : cmdIn; // Send " add $zero, $zero, $zero " for bubbles

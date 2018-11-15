@@ -29,7 +29,7 @@ module cpu(
   wire[31:0] rrtOrImm2, cmdDecodelet, memOut, rrsNow, rrs1, rrs2, rrt1, rrt2, cmd0, aluOut2, Dw3, pc0, rrsOrPc;
 
 
-	complexPC pcComp(.clk(clk), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .jmpAddr(jmpAddr), .rrs(rrs2),.pcData(pc0));
+	complexPC pcComp(.clk(clk), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .jmpAddr(jmpAddr), .rrs(rrs2),.cmd(cmdDecodelet),.pcData(pc0));
 	decodelet pcDecode(.cmdIn(cmdDecodelet), .lastCmdIn(lastCmd), .lastLastCmdIn(lastLastCmd), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr), .imm(imm0), .jmpAddr(jmpAddr), .cmdOut(cmd0));
 	// Data memory is also here, but it's defined in stage 3
 
