@@ -30,7 +30,7 @@ module cpu(
 
 
 	complexPC pcComp(.clk(clk), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .jmpAddr(jmpAddr), .rrs(rrs2),.cmd(cmdDecodelet),.pcData(pc0));
-	decodelet pcDecode(.cmdIn(cmdDecodelet), .lastCmdIn(lastCmd), .lastLastCmdIn(lastLastCmd), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr), .imm(imm0), .jmpAddr(jmpAddr), .cmdOut(cmd0));
+	decodelet pcDecode(.cmdIn(cmdDecodelet), .cmdIn1(lastCmd), .cmdIn2(lastLastCmd), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr), .imm(imm0), .jmpAddr(jmpAddr), .cmdOut(cmd0));
 	// Data memory is also here, but it's defined in stage 3
 
 	always @(posedge clk)begin cmd1 <= cmd0; pc1 <= pc0; lastCmd <= cmdDecodelet; end
@@ -43,7 +43,7 @@ module cpu(
 	assign rrs2 = (rs2 == 5'b0) ? rrs2_nofwd : ( (rs2 == Aw3 && regWrEn3) ? Dw3 : ( (rs2 == Aw4 && regWrEn4) ? Dw4 : rrs2_nofwd) );
 	assign rrt2 = (rt2 == 5'b0) ? rrt2_nofwd : ( (rt2 == Aw3 && regWrEn3) ? Dw3 : ( (rt2 == Aw4 && regWrEn4) ? Dw4 : rrt2_nofwd) );
 
-	assign rrtOrImm2 = immSel2 ? imm2 : rrt2;
+	assign rrtOrImm2 = immSel2 ? imm2 : rrt2; // Does this do sign extension right?
   assign rrsOrPc = jalAdd82 ? pc2 : rrs2;
 	alu math(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrsOrPc), .operandB(rrtOrImm2), .command(aluOp2));
 
