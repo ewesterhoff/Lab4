@@ -40,6 +40,11 @@ module cpu(
 
 	always @(posedge clk)begin rs2 <= rs1; pc2 <= pc1; rt2 <= rt1; jalAdd82 <= jalAdd81; rrs2_nofwd <= rrs1; rrt2_nofwd <= rrt1; regWrEn2 <= regWrEn1; immSel2 <= immSel1;  imm2 <= imm1; Aw2 <= Aw1; aluOp2 <= aluOp1; cmd2 <= cmd1; DwSel2 <= DwSel1; memWrEn2 <= memWrEn1; lastLastCmd <= lastCmd; end
 
+	initial begin // Initialize "old" Aw's so we don't forward from before time
+		Aw3 = 5'b0;
+		Aw4 = 5'b0;
+	end
+
 	assign rrs2 = (rs2 == 5'b0) ? rrs2_nofwd : ( (rs2 == Aw3 && regWrEn3) ? Dw3 : ( (rs2 == Aw4 && regWrEn4) ? Dw4 : rrs2_nofwd) );
 	assign rrt2 = (rt2 == 5'b0) ? rrt2_nofwd : ( (rt2 == Aw3 && regWrEn3) ? Dw3 : ( (rt2 == Aw4 && regWrEn4) ? Dw4 : rrt2_nofwd) );
 
