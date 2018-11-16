@@ -1,6 +1,3 @@
-add $zero, $zero, $zero
-add $zero, $zero, $zero
-
 addi $t0, $zero, 10
 addi $t1, $zero, 21
 beq $t0, $t1, target
@@ -11,7 +8,7 @@ addi $t3, $zero, 10
 j end
 
 target:
-addi $ra, $zero,48
+addi $t5, $zero,48
 add $t4,$t0,$t1
 sub $t3,$t2,$t0
 
