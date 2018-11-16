@@ -12,7 +12,7 @@ module cpu(
   output Dw
   );
 
-  reg[31:0] cmd1, cmd2, cmd3, cmd4, rrs3, rrs2_nofwd, rrt2_nofwd, rrt3, aluOut3, Dw4, pc1, pc2, lastCmd, lastLastCmd;
+  reg[31:0] cmd1, cmd2, cmd3, cmd4, rrs3, rrs2_nofwd, rrt2_nofwd, rrt3, aluOut3, Dw4, pc1, pc2, lastCmd, lastLastCmd, lastLastLastCmd;
   reg[15:0] imm2, imm3;
 	reg[4:0] rs2, rt2, Aw2, Aw3, Aw4;
   reg[2:0] aluOp2;
@@ -30,7 +30,7 @@ module cpu(
 
 
 	complexPC pcComp(.clk(clk), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr),.imm(imm0), .jmpAddr(jmpAddr), .rrs(rrs2),.cmd(cmdDecodelet),.pcData(pc0));
-	decodelet pcDecode(.cmdIn(cmdDecodelet), .cmdIn1(lastCmd), .cmdIn2(lastLastCmd), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr), .imm(imm0), .jmpAddr(jmpAddr), .cmdOut(cmd0));
+	decodelet pcDecode(.cmdIn(cmdDecodelet), .cmdIn1(lastCmd), .cmdIn2(lastLastCmd), .cmdIn3(lastLastLastCmd), .isBubble(isBubble), .isJmp(isJmp), .isJr(isJr), .isBr(isBr), .imm(imm0), .jmpAddr(jmpAddr), .cmdOut(cmd0));
 	// Data memory is also here, but it's defined in stage 3
 
 	always @(posedge clk)begin cmd1 <= cmd0; pc1 <= pc0; lastCmd <= cmdDecodelet; end
@@ -47,7 +47,7 @@ module cpu(
   assign rrsOrPc = jalAdd82 ? pc2 : rrs2;
 	alu math(.result(aluOut2),.carryout(carryout),.zero(zero),.overflow(overflow), .operandA(rrsOrPc), .operandB(rrtOrImm2), .command(aluOp2));
 
-	always @(posedge clk)begin rrs3 <= rrs2; regWrEn3 <= regWrEn2; imm3 <= imm2; Aw3 <= Aw2; aluOut3 <= aluOut2; cmd3 <= cmd2; rrt3 <= rrt2; DwSel3 <= DwSel2; memWrEn3 <= memWrEn2; end
+	always @(posedge clk)begin rrs3 <= rrs2; regWrEn3 <= regWrEn2; imm3 <= imm2; Aw3 <= Aw2; aluOut3 <= aluOut2; cmd3 <= cmd2; rrt3 <= rrt2; DwSel3 <= DwSel2; memWrEn3 <= memWrEn2; lastLastLastCmd <= lastLastCmd; end
 
 	dataMemory mem( .clk(clk),.dataOut(memOut), .instruction(cmdDecodelet), .address(aluOut3), .pc_address(pc0), .writeEnable(memWrEn3), .dataIn(rrt3));
 	assign Dw3 = (DwSel3 == 2'd2) ? memOut : aluOut3;

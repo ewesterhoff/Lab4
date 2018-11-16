@@ -1,7 +1,7 @@
 # Generate machine code memory image from MIPS assembly
 
 # Get PROGRAM and *MEMDUMP from project settings
-PROGRAM := jr_jal
+PROGRAM := br
 
 # Memory image(s) to create from the assembly program
 TEXTMEMDUMP := $(PROGRAM).text.hex
@@ -18,8 +18,7 @@ CIRCUITS := $(TOPLEVEL).v
 ALLMEM := $(TEXTMEMDUMP) $(DATAMEMDUMP)
 
 # MARS is pre-installed (/usr/local/bin/mars) on VM. Non-VM users should use
-#MARS_PATH := java -jar /usr/local/share/mars/Mars4_5.jar
-MARS_PATH := java -jar /usr/local/share/mars/Mars4_5.jar
+MARS_PATH := mars
 MARS_OPTS := a  mc CompactTextAtZero
 MARS      := $(MARS_PATH) $(MARS_OPTS)
 
